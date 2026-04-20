@@ -12,8 +12,10 @@ datasource db {
   provider = "postgresql"
 }
 
-model task {
-  id        Int     @id @default(autoincrement())
+model Task {
+  id        Int      @id @default(autoincrement())
   title     String
-  completed Boolean @default(false)
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  userId    String
 }

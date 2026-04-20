@@ -1,5 +1,7 @@
 "use client";
 import React from "react";
+import { createClient } from "../../utils/supabase/client"; 
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [tasks, setTasks] = React.useState([]);
@@ -7,6 +9,14 @@ const page = () => {
   const [error, setError] = React.useState(false);
   const [input, setInput] = React.useState("");
   const [disable, setDisable] = React.useState(false);
+  const router = useRouter();
+  const supabase = createClient();
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push("/login");
+    router.refresh();
+  };
 
   const handleFetch = async () => {
     setError(false);
@@ -100,7 +110,15 @@ const page = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
       <div className="w-full max-w-md bg-white shadow-xl rounded-2xl p-6">
-        <h1 className="text-2xl font-bold text-center mb-6">Task Manager</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">Task Manager</h1>
+          <button
+            onClick={handleLogout}
+            className="text-sm text-gray-500 hover:text-gray-700"
+          >
+            Logout
+          </button>
+        </div>
 
         {/* Input */}
         <div className="flex gap-2 mb-4">
